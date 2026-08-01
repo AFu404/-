@@ -22,3 +22,19 @@ npm run dev
 - 后端：http://localhost:3000/health
 
 > 合规提醒：送礼/付费能力先做模块隔离。未确认合规口径前，不要把付费送礼和排行榜排名强绑定。
+
+## Cloudflare 部署
+
+根目录已补 `wrangler.jsonc`，用于 Cloudflare Workers 部署：
+
+- 静态资源：`web/dist`
+- SPA 回退：`single-page-application`
+- `/api/*`：由 `worker/index.js` 提供 Cloudflare 演示 API（内存数据，方便先上线玩）
+
+Cloudflare 构建配置建议：
+
+- Build command：`npm run build`
+- Deploy command：`npx wrangler deploy`
+- Node：`24`
+
+注意：`server/` 里的 Express + MySQL 完整后端不能直接跑在 Cloudflare Workers 上；要正式持久化，下一步应改 Cloudflare D1/KV，或把后端部署到支持 Node/MySQL 的服务器。
